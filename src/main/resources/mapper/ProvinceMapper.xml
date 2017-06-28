@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org/DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.ProvinceMapper">
+
+    <resultMap id="cityResult" type="domain.City">
+        <id property="id" column="cid"/>
+        <result property="name" column="cname"/>
+        <result property="province_id" column="pid"/>
+    </resultMap>
+
+    <resultMap id="provinceResult" type="domain.Province">
+        <id property="id" column="pid"/>
+        <result property="name" column="pname"/>
+        <collection property="cities" resultMap="cityResult"/>
+    </resultMap>
+
+    <select id="selectById" resultMap="provinceResult">
+        SELECT p.id pid, p.name pname, c.id cid, c.name cname
+        FROM provinces p LEFT OUTER JOIN cities c ON p.id = c.province_id
+        WHERE p.id = #{id}
+    </select>
+</mapper>
